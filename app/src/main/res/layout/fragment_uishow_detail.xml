@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true" >
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/fragment_uishows"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:context=".view.UIShowDetail">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/clFail"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="invisible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:id="@+id/ivRefresh"
+                    android:layout_width="70dp"
+                    android:layout_height="105dp"
+                    android:layout_margin="10dp"
+                    android:src="@drawable/ic_refresh"
+                    android:foreground="?android:attr/selectableItemBackground"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    />
+
+                <TextView
+                    android:id="@+id/tvMessage"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"
+                    android:ellipsize="end"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="4dp"
+                    android:textSize="12sp"
+                    android:textAlignment="center"
+                    app:layout_constraintTop_toBottomOf="@id/ivRefresh"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:text="Houve uma falha ao carregar os dados. Tente novamente"
+                    />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <ImageView
+                android:id="@+id/ivLoading"
+                android:layout_width="120dp"
+                android:layout_height="155dp"
+                android:layout_margin="10dp"
+                android:src="@drawable/loading_animation"
+                android:foreground="?android:attr/selectableItemBackground"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+            />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/clForm"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:visibility="visible"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    >
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/clShowBanner"
+                    android:layout_width="150dp"
+                    android:layout_height="185dp"
+                    android:layout_margin="10dp"
+                    app:cardElevation="10dp"
+                    app:cardCornerRadius="10dp"
+                    app:cardPreventCornerOverlap="true"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    >
+
+                    <ImageView
+                        android:id="@+id/ivShowBanner"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:foreground="?android:attr/selectableItemBackground"
+                        android:src="@drawable/loading_animation"
+                        android:scaleType="fitXY"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </com.google.android.material.card.MaterialCardView>
+
+                    <TextView
+                        android:id="@+id/tvShowTitle"
+                        android:text="Dexter"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/black"
+                        android:textAlignment="center"
+                        android:textSize="25dp"
+                        android:paddingStart="4dp"
+                        android:paddingEnd="4dp"
+                        android:layout_margin="10dp"
+                        app:layout_constraintStart_toEndOf="@id/clShowBanner"
+                        app:layout_constraintTop_toTopOf="@id/clShowBanner"/>
+
+                    <TextView
+                        android:id="@+id/tvGenere"
+                        android:text="Gênero: "
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/black"
+                        android:textAlignment="center"
+                        android:paddingStart="5dp"
+                        android:paddingEnd="4dp"
+                        app:layout_constraintTop_toBottomOf="@id/tvShowTitle"
+                        app:layout_constraintStart_toStartOf="@id/tvShowTitle" />
+
+                    <TextView
+                        android:id="@+id/tvGenereText"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/black"
+                        android:ellipsize="end"
+                        app:layout_constraintTop_toBottomOf="@id/tvShowTitle"
+                        app:layout_constraintStart_toEndOf="@id/tvGenere"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        />
+
+
+                    <com.ms.square.android.expandabletextview.ExpandableTextView
+                        xmlns:android="http://schemas.android.com/apk/res/android"
+                        xmlns:expandableTextView="http://schemas.android.com/apk/res-auto"
+                        android:id="@+id/tvSumary"
+                        android:layout_width="match_parent"
+                        android:layout_below="@id/clShowBanner"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        expandableTextView:maxCollapsedLines="2"
+                        expandableTextView:animDuration="200"
+                        expandableTextView:layout_constraintTop_toBottomOf="@id/clShowBanner">
+
+                        <TextView
+                            android:id="@id/expandable_text"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:textColor="#666666"
+                                android:textSize="16sp" />
+
+                        <ImageButton
+                            android:id="@id/expand_collapse"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="right|bottom"
+                            android:background="@android:color/transparent"
+                            android:padding="16dp" />
+
+                    </com.ms.square.android.expandabletextview.ExpandableTextView>
+
+                    <Spinner
+                        android:id="@+id/spSeason"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/tvSumary"
+                        />
+
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rvEpisodes"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/spSeason"
+                        app:layout_constraintBottom_toBottomOf="parent"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
+
+</layout>

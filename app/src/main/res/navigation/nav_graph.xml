@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/UIShows">
+
+    <fragment
+        android:id="@+id/UIShows"
+        android:name="com.example.tvseries.view.UIShows"
+        android:label="TV Series"
+        tools:layout="@layout/fragment_uishow">
+        <action
+            android:id="@+id/action_UIShows_to_UIShowDetail"
+            app:destination="@id/UIShowDetail" />
+    </fragment>
+    <activity
+        android:id="@+id/mainActivity"
+        android:name="com.example.tvseries.MainActivity"
+        android:label="MainActivity" />
+    <fragment
+        android:id="@+id/UIShowDetail"
+        android:name="com.example.tvseries.view.UIShowDetail"
+        android:label="TV Series" >
+        <argument
+            android:name="show"
+            app:argType="com.example.tvseries.entities.Show"
+            app:nullable="true"/>
+        <action
+            android:id="@+id/action_UIShowDetail_to_UIShows"
+            app:destination="@id/UIShows" />
+        <action
+            android:id="@+id/action_UIShowDetail_to_UIEpisodeDetail"
+            app:destination="@id/UIEpisodeDetail" />
+    </fragment>
+    <fragment
+        android:id="@+id/UIEpisodeDetail"
+        android:name="com.example.tvseries.view.UIEpisodeDetail"
+        android:label="TV Series" >
+        <action
+            android:id="@+id/action_UIEpisodeDetail_to_UIShowDetail"
+            app:destination="@id/UIShowDetail" />
+        <argument
+            android:name="episode"
+            app:argType="com.example.tvseries.entities.Episode"
+            app:nullable="true"/>
+
+    </fragment>
+</navigation>
