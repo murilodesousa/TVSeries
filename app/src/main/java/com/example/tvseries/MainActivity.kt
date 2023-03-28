@@ -14,7 +14,7 @@ import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupActionBarWithNavController
 import com.example.tvseries.databinding.ActivityMainBinding
-import com.example.tvseries.viewmodel.VMShow
+import com.example.tvseries.shows.presenter.VMShow
 
 class MainActivity : AppCompatActivity() {
 

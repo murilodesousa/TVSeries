@@ -1,4 +1,4 @@
-package com.example.tvseries.adapter
+package com.example.tvseries.episodes.presenter
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
@@ -10,31 +10,31 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tvseries.R
 import com.example.tvseries.databinding.EpisodeItemBinding
-import com.example.tvseries.entities.Episode
+import com.example.tvseries.episodes.data.EpisodeEntity
 import com.example.tvseries.utils.downloadImage
 import java.text.SimpleDateFormat
 import com.example.tvseries.utils.toDate
 
-class EpisodeAdapter(private val onItemSelected: (episode: Episode) -> Unit
-): PagingDataAdapter<Episode, EpisodeAdapter.ViewHolder>(object : DiffUtil.ItemCallback<Episode>() {
+class EpisodeAdapter(private val onItemSelected: (episode: EpisodeEntity) -> Unit
+): PagingDataAdapter<EpisodeEntity, EpisodeAdapter.ViewHolder>(object : DiffUtil.ItemCallback<EpisodeEntity>() {
 
-    override fun areItemsTheSame(oldItem: Episode, newItem: Episode): Boolean {
+    override fun areItemsTheSame(oldItem: EpisodeEntity, newItem: EpisodeEntity): Boolean {
         return oldItem.id == newItem.id
     }
 
-    override fun areContentsTheSame(oldItem: Episode, newItem: Episode): Boolean {
+    override fun areContentsTheSame(oldItem: EpisodeEntity, newItem: EpisodeEntity): Boolean {
         return oldItem == newItem
     }
 
 }) {
 
-    private val _episodes = mutableListOf<Episode>()
+    private val _episodes = mutableListOf<EpisodeEntity>()
     private lateinit var _lifecycleOwner: LifecycleOwner
 
     inner class ViewHolder(val binding: EpisodeItemBinding) : RecyclerView.ViewHolder(binding.root) {
 
         @SuppressLint("SetTextI18n", "SimpleDateFormat")
-        fun bind(episode: Episode, position: Int) {
+        fun bind(episode: EpisodeEntity, position: Int) {
             binding.lifecycleOwner = _lifecycleOwner
             binding.tvName.text = episode.name
             val formatter = SimpleDateFormat("dd/MM/yyyy")
@@ -49,7 +49,7 @@ class EpisodeAdapter(private val onItemSelected: (episode: Episode) -> Unit
 
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EpisodeAdapter.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
             DataBindingUtil.inflate(
                 LayoutInflater.from(parent.context),
@@ -64,14 +64,14 @@ class EpisodeAdapter(private val onItemSelected: (episode: Episode) -> Unit
         return _episodes.size
     }
 
-    override fun onBindViewHolder(holder: EpisodeAdapter.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         if (_episodes.isNotEmpty() && position <= _episodes.lastIndex) {
             val episode = _episodes[position]
             holder.bind(episode, position)
         }
     }
 
-    fun submitList(list: List<Episode>) {
+    fun submitList(list: List<EpisodeEntity>) {
         _episodes.clear()
         _episodes.addAll(list)
         notifyDataSetChanged()

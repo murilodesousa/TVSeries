@@ -12,7 +12,7 @@
             android:id="@+id/fragment_uishows"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:context=".view.UIShowDetail">
+            tools:context=".shows.presenter.UIShowDetail">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/clFail"

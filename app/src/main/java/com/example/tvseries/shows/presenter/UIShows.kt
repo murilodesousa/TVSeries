@@ -1,4 +1,4 @@
-package com.example.tvseries.view
+package com.example.tvseries.shows.presenter
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,10 +10,8 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tvseries.R
-import com.example.tvseries.adapter.ShowAdapter
 import com.example.tvseries.databinding.FragmentUishowBinding
-import com.example.tvseries.view.base.UIBase
-import com.example.tvseries.viewmodel.VMShow
+import com.example.tvseries.app.base.UIBase
 
 class UIShows: UIBase() {
 

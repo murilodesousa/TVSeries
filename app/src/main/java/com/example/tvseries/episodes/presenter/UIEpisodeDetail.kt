@@ -1,4 +1,4 @@
-package com.example.tvseries.view
+package com.example.tvseries.episodes.presenter
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -9,14 +9,14 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import com.example.tvseries.R
 import com.example.tvseries.databinding.FragmentUiepisodeDetailBinding
-import com.example.tvseries.entities.Episode
+import com.example.tvseries.episodes.data.EpisodeEntity
 import com.example.tvseries.utils.downloadImage
-import com.example.tvseries.view.base.UIBase
+import com.example.tvseries.app.base.UIBase
 
 class UIEpisodeDetail: UIBase() {
 
     private var _binding: FragmentUiepisodeDetailBinding? = null
-    private var _episode: Episode? = null
+    private var _episode: EpisodeEntity? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,

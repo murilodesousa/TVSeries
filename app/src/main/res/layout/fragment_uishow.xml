@@ -7,7 +7,7 @@
         android:id="@+id/fragment_uishows"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".view.UIShows">
+        tools:context=".shows.presenter.UIShows">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/clFail"

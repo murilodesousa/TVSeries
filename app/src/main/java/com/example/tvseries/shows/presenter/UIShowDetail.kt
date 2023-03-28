@@ -1,4 +1,4 @@
-package com.example.tvseries.view
+package com.example.tvseries.shows.presenter
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -9,26 +9,23 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.TextView
-import android.widget.Toolbar
 import androidx.core.content.res.ResourcesCompat
-import androidx.core.view.get
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.tvseries.R
-import com.example.tvseries.adapter.EpisodeAdapter
+import com.example.tvseries.episodes.presenter.EpisodeAdapter
 import com.example.tvseries.databinding.FragmentUishowDetailBinding
-import com.example.tvseries.entities.Show
+import com.example.tvseries.shows.data.ShowEntity
 import com.example.tvseries.utils.downloadImage
-import com.example.tvseries.view.base.UIBase
-import com.example.tvseries.viewmodel.VMShow
+import com.example.tvseries.app.base.UIBase
 
 
 class UIShowDetail: UIBase() {
 
     private var _binding: FragmentUishowDetailBinding? = null
-    private var _selectedShow: Show? = null
+    private var _selectedShowEntity: ShowEntity? = null
     private var _episodeAdapter: EpisodeAdapter? = null
 
     private val viewModel: VMShow by lazy {
@@ -52,7 +49,7 @@ class UIShowDetail: UIBase() {
     override fun obtainArguments() {
         super.obtainArguments()
         arguments?.let {
-            _selectedShow = UIShowDetailArgs.fromBundle(it).show
+            _selectedShowEntity = UIShowDetailArgs.fromBundle(it).show
         }
     }
 
@@ -115,7 +112,7 @@ class UIShowDetail: UIBase() {
     }
 
     private fun  selectShow() {
-        _selectedShow.let {
+        _selectedShowEntity.let {
             if (it != null) {
                 viewModel.selectShow(it)
             }
@@ -134,14 +131,14 @@ class UIShowDetail: UIBase() {
         _episodeAdapter?.defineLifecycleOwner(this)
         _binding?.rvEpisodes?.adapter = _episodeAdapter
         selectShow()
-        _binding?.tvShowTitle?.text = _selectedShow?.name
-        _binding?.ivShowBanner?.downloadImage(_selectedShow?.image?.get("medium"))
-        val last = _selectedShow?.genres?.last()
-        _selectedShow?.genres?.forEach {
+        _binding?.tvShowTitle?.text = _selectedShowEntity?.name
+        _binding?.ivShowBanner?.downloadImage(_selectedShowEntity?.image?.get("medium"))
+        val last = _selectedShowEntity?.genres?.last()
+        _selectedShowEntity?.genres?.forEach {
             val value = _binding?.tvGenereText?.text
             _binding?.tvGenereText?.text = value.toString() + it + if (it != last) {" | "} else {""}
         }
-        _binding?.tvSumary?.setText(Html.fromHtml(_selectedShow?.summary))
+        _binding?.tvSumary?.setText(Html.fromHtml(_selectedShowEntity?.summary))
     }
 
     private fun setViewLoading(loading: Boolean, error: Boolean) {
@@ -207,7 +204,7 @@ class UIShowDetail: UIBase() {
                     spinnerView.setOnClickListener(null)
                 }
 
-                val currentSeason = viewModel.selectedSeason?.name
+                val currentSeason = viewModel.selectedSeasonEntity?.name
                 if (currentSeason == seasons[position]) {
                     spinnerView.setBackgroundColor(
                         ResourcesCompat.getColor(

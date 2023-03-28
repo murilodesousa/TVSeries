@@ -1,4 +1,4 @@
-package com.example.tvseries.view.base
+package com.example.tvseries.app.base
 
 import android.os.Bundle
 import android.view.View

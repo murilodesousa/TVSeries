@@ -1,11 +1,11 @@
-package com.example.tvseries.entities
+package com.example.tvseries.shows.data
 
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
 import kotlinx.serialization.SerialName
 
 @Parcelize
-data class Show(
+data class ShowEntity(
 
     val id: Long,
     val url: String?,

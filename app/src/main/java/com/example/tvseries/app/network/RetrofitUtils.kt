@@ -1,9 +1,9 @@
-package com.example.tvseries.utils
+package com.example.tvseries.app.network
 
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-class NetworkUtils {
+class RetrofitUtils {
 
     companion object {
         fun getRetrofitInstance(): Retrofit {
