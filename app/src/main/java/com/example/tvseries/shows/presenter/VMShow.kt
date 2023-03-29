@@ -19,7 +19,6 @@ class VMShow: ViewModel() {
 
     private lateinit var job: Job
 
-
     private val _shows = MutableLiveData<List<ShowEntity>>(null)
     private val _episodes = MutableLiveData<List<EpisodeEntity>>(null)
     private val _episodesBySeason = MutableLiveData<List<EpisodeEntity>>(null)
@@ -127,7 +126,6 @@ class VMShow: ViewModel() {
                         _lastPageIndex = -1
                         _shows.value = mutableListOf()
                         _shows.value = showEntities
-
                         _requestStatus.value = RequestStatus.Done
                     }
                 }

@@ -5,10 +5,10 @@
     <color name="purple_700">#FF3700B3</color>
     <color name="teal_200">#FF03DAC5</color>
     <color name="teal_700">#FF018786</color>
-    <color name="black">#FF000000</color>
+    <color name="black">#ff7f7f7f</color>
     <color name="white">#FFFFFFFF</color>
     <color name="solidGrayColor">#ff7f7f7f</color>
     <color name="lineGrayColor">#d9d9d9</color>
     <color name="selectedItemBackground">#82B3F4</color>
-    <color name="toolBarColor">#1976d2</color>
+    <color name="toolBarColor">#0C0C0C</color>
 </resources>

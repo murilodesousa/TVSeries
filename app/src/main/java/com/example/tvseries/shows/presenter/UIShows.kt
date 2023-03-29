@@ -44,7 +44,6 @@ class UIShows: UIBase() {
 
     override fun bindView() {
         super.bindView()
-
         _adapter = ShowAdapter() {
             findNavController().navigate(
                 UIShowsDirections.actionUIShowsToUIShowDetail(it)
@@ -54,7 +53,6 @@ class UIShows: UIBase() {
         _adapter?.defineLifecycleOwner(this)
         _binding?.rvItems?.adapter = _adapter
         _binding?.rvItems?.addOnScrollListener(recyclerViewScrollListener)
-
         viewModel.clear()
         viewModel.getShows()
     }

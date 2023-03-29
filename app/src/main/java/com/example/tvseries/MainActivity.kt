@@ -33,7 +33,6 @@ class MainActivity : AppCompatActivity() {
         setupToolbar()
     }
 
-
     private fun setupToolbar() {
        setSupportActionBar(binding?.mainToolbar)
        supportActionBar?.apply { setupActionBarWithNavController(navController) }
