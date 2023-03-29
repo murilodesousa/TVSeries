@@ -20,6 +20,7 @@ class VMShow: ViewModel() {
     private lateinit var job: Job
 
     private val _shows = MutableLiveData<List<ShowEntity>>(null)
+    private val _filteredShows = MutableLiveData<List<ShowEntity>>(null)
     private val _episodes = MutableLiveData<List<EpisodeEntity>>(null)
     private val _episodesBySeason = MutableLiveData<List<EpisodeEntity>>(null)
     private val _seasons = MutableLiveData<List<SeasonEntity>>()
@@ -28,9 +29,12 @@ class VMShow: ViewModel() {
     private var _selectedSeasonEntity: SeasonEntity? = null
     private var _selectedPositionSeason: Int? = null
     private var _lastPageIndex: Int = -1
+    private var _filtering = MutableLiveData<Boolean>(false)
 
     val shows: LiveData<List<ShowEntity>?>
         get() = _shows
+    val filteredShows: LiveData<List<ShowEntity>?>
+        get() = _filteredShows
     val episodesBySeason: LiveData<List<EpisodeEntity>?>
         get() = _episodesBySeason
     val seasons: LiveData<List<SeasonEntity>>
@@ -41,12 +45,15 @@ class VMShow: ViewModel() {
         get() = _selectedPositionSeason
     val requestStatus: LiveData<RequestStatus>
         get() = _requestStatus
+    val filtering: LiveData<Boolean>
+        get() = _filtering
 
     fun fetchingApi(): Boolean {
         return  (_requestStatus.value == RequestStatus.Fetching)
     }
 
     fun getShows() {
+        clearFilter()
         _lastPageIndex++
         _requestStatus.value = RequestStatus.Fetching
         val retrofitClient = RetrofitUtils.getRetrofitInstance()
@@ -109,6 +116,7 @@ class VMShow: ViewModel() {
     }
 
     fun getShowByFilter(filter: String) {
+        setFiltering()
         _requestStatus.value = RequestStatus.Fetching
         val retrofitClient = RetrofitUtils.getRetrofitInstance()
         val endpoint = retrofitClient.create(Api::class.java)
@@ -117,16 +125,13 @@ class VMShow: ViewModel() {
             filteredShowList.enqueue(object : retrofit2.Callback<List<ShowFilterEntity>> {
                 override fun onResponse(call: Call<List<ShowFilterEntity>>, response: Response<List<ShowFilterEntity>>) {
                     response.body()?.let {
-                        var showEntities: MutableList<ShowEntity> = mutableListOf()
+                        val showEntities: MutableList<ShowEntity> = mutableListOf()
                         it.forEach {
-                            it.showEntity?.let {
-                                showEntities.add(it)
-                            }
+                            showEntities.add(it.show)
                         }
                         _lastPageIndex = -1
-                        _shows.value = mutableListOf()
-                        _shows.value = showEntities
-                        _requestStatus.value = RequestStatus.Done
+                        _filteredShows.postValue(showEntities)
+                        _requestStatus.postValue(RequestStatus.Done)
                     }
                 }
                 override fun onFailure(call: Call<List<ShowFilterEntity>>, t: Throwable) {
@@ -150,6 +155,7 @@ class VMShow: ViewModel() {
         _episodesBySeason.value = mutableListOf()
         _selectedSeasonEntity = null
         _selectedPositionSeason = null
+        clearFilter()
     }
 
     fun selectShow(showEntity: ShowEntity) {
@@ -174,6 +180,15 @@ class VMShow: ViewModel() {
 
     fun selectPositionSeason(index: Int?) {
         _selectedPositionSeason = index
+    }
+
+    fun setFiltering() {
+        _filtering.value = true
+    }
+
+    private fun clearFilter() {
+        _filtering.value = false
+        _filteredShows.value = mutableListOf()
     }
 
 }

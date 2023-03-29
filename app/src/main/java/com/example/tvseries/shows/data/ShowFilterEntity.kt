@@ -5,5 +5,5 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class ShowFilterEntity(
-    val showEntity: ShowEntity?,
+    val show: ShowEntity,
 ) : Parcelable

@@ -19,16 +19,20 @@ fun String.toDate(
 }
 
 fun ImageView.downloadImage(url: String?) {
-    url?.let {
-        val imgUri = it.toUri().buildUpon().scheme("https").build()
-        Glide.with(this.context)
-            .load(imgUri)
-            .apply(
-                RequestOptions()
-                    .placeholder(R.drawable.loading_animation)
-                    .error(R.drawable.ic_broken_image)
-            )
-            .transition(DrawableTransitionOptions.withCrossFade())
-            .into(this)
+    if (url != null) {
+        url.let {
+            val imgUri = it.toUri().buildUpon().scheme("https").build()
+            Glide.with(this.context)
+                .load(imgUri)
+                .apply(
+                    RequestOptions()
+                        .placeholder(R.drawable.loading_animation)
+                        .error(R.drawable.ic_broken_image)
+                )
+                .transition(DrawableTransitionOptions.withCrossFade())
+                .into(this)
+        }
+    } else {
+        this.setImageResource(R.drawable.ic_broken_image)
     }
 }

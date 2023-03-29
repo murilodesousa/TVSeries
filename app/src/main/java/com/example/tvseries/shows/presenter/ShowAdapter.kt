@@ -25,7 +25,7 @@ class ShowAdapter(private val onItemSelected: (showEntity: ShowEntity) -> Unit
 
 }) {
 
-    private val _showEntities = mutableListOf<ShowEntity>()
+    private val _showEntities = mutableListOf<ShowEntity?>()
     private lateinit var _lifecycleOwner: LifecycleOwner
 
     inner class ViewHolder(val binding: ShowItemBinding) : RecyclerView.ViewHolder(binding.root) {
@@ -57,10 +57,15 @@ class ShowAdapter(private val onItemSelected: (showEntity: ShowEntity) -> Unit
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        if (_showEntities.isNotEmpty() && position <= _showEntities.lastIndex) {
-            val show = _showEntities[position]
-            holder.bind(show)
+        val show = _showEntities[position]
+        show?.let {
+            holder.bind(it)
         }
+    }
+
+    fun clearList() {
+        _showEntities.clear()
+        notifyDataSetChanged()
     }
 
     fun submitList(list: List<ShowEntity>) {

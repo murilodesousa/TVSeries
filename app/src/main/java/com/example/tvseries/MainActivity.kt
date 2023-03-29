@@ -1,5 +1,6 @@
 package com.example.tvseries
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
@@ -18,7 +19,25 @@ import com.example.tvseries.shows.presenter.VMShow
 
 class MainActivity : AppCompatActivity() {
 
+    companion object {
+        private var instance: MainActivity? = null
+
+        fun getInstance(): MainActivity? {
+            return instance
+        }
+        fun getContext(): Context? {
+            return instance
+        }
+    }
+
     var binding: ActivityMainBinding? = null
+    var searchView: SearchView? = null
+    lateinit var onShowFilter: (filter: String) -> Unit
+
+    fun setFilterCallback(callback: (filter: String) -> Unit) {
+        onShowFilter = callback
+    }
+
     private val navController by lazy {
         supportFragmentManager.findFragmentById(R.id.nav_host_fragment)!!.findNavController()
     }
@@ -28,6 +47,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        instance = this
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         setupToolbar()
@@ -44,20 +64,12 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.toolbar_menus, menu)
-        binding?.mainToolbar?.setOnMenuItemClickListener {
-            when (it.itemId) {
-                R.id.mnShowSearch -> {
-                }
-            }
-            true
-        }
 
-        val searchView = binding?.mainToolbar?.menu?.findItem(R.id.mnShowSearch)?.actionView as SearchView
+        searchView = binding?.mainToolbar?.menu?.findItem(R.id.mnShowSearch)?.actionView as SearchView
 
-
-        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+        searchView?.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
-                viewModel.getShowByFilter(query)
+                onShowFilter(query)
                 return false
             }
 
@@ -65,9 +77,10 @@ class MainActivity : AppCompatActivity() {
                 return false
             }
 
+
         })
 
-        searchView.addOnAttachStateChangeListener(object : View.OnAttachStateChangeListener {
+        searchView?.addOnAttachStateChangeListener(object : View.OnAttachStateChangeListener {
             override fun onViewDetachedFromWindow(arg0: View) {
             }
 

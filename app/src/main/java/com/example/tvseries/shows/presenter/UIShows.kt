@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.tvseries.MainActivity
 import com.example.tvseries.R
 import com.example.tvseries.databinding.FragmentUishowBinding
 import com.example.tvseries.app.base.UIBase
@@ -44,6 +45,13 @@ class UIShows: UIBase() {
 
     override fun bindView() {
         super.bindView()
+
+        val main = MainActivity.getInstance()
+        main?.setFilterCallback {
+            _adapter?.clearList()
+            viewModel.getShowByFilter(it)
+        }
+
         _adapter = ShowAdapter() {
             findNavController().navigate(
                 UIShowsDirections.actionUIShowsToUIShowDetail(it)
@@ -59,7 +67,14 @@ class UIShows: UIBase() {
 
     override fun setListeners() {
         super.setListeners()
+
         viewModel.shows.observe(viewLifecycleOwner) {
+            it?.let {
+                _adapter?.submitList(it)
+            }
+        }
+
+        viewModel.filteredShows.observe(viewLifecycleOwner) {
             it?.let {
                 _adapter?.submitList(it)
             }
@@ -110,7 +125,7 @@ class UIShows: UIBase() {
                     val visibleItemCount = gridLayout.childCount
                     val firstVisibleItem = gridLayout.findFirstCompletelyVisibleItemPosition()
                     val totalItemCount = _adapter?.itemCount ?: 0
-                    if ((visibleItemCount + firstVisibleItem) >= totalItemCount) {
+                    if (((visibleItemCount + firstVisibleItem) >= totalItemCount) && (viewModel.filtering.value == false)){
                         viewModel.getShows()
                     }
                 }
