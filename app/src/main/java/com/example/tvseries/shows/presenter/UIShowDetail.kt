@@ -11,6 +11,7 @@ import android.widget.ArrayAdapter
 import android.widget.TextView
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.get
+import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -57,19 +58,19 @@ class UIShowDetail: UIBase() {
 
     override fun setListeners() {
         viewModel.seasons.observe(viewLifecycleOwner) {
-            it?.let {
-                val hintText = "Temporada...  "
-                val seasonsName = mutableListOf(hintText)
-                it.forEach {
-                    if (it.episodeOrder != null) {
-                        seasonsName.add("Temporada "+it.number.toString())
+            if (it.isNotEmpty()) {
+                it.let {
+                    val hintText = "Temporada...  "
+                    val seasonsName = mutableListOf(hintText)
+                    it.forEach {
+                        seasonsName.add("Temporada " + it.number.toString())
                     }
-                }
-                val spinnerAdapter = createSpinnerAdapter(seasonsName)
-                spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-                _binding?.spSeason?.adapter = spinnerAdapter
-                if (viewModel.selectedPositionSeason != null) {
-                    _binding?.spSeason?.setSelection(viewModel.selectedPositionSeason ?: 0)
+                    val spinnerAdapter = createSpinnerAdapter(seasonsName)
+                    spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                    _binding?.spSeason?.adapter = spinnerAdapter
+                    if (viewModel.selectedPositionSeason != null) {
+                        _binding?.spSeason?.setSelection(viewModel.selectedPositionSeason ?: 0)
+                    }
                 }
             }
         }
@@ -130,10 +131,18 @@ class UIShowDetail: UIBase() {
         selectShow()
         _binding?.tvShowTitle?.text = _selectedShowEntity?.name
         _binding?.ivShowBanner?.downloadImage(_selectedShowEntity?.image?.get("medium"))
-        val last = _selectedShowEntity?.genres?.last()
-        _selectedShowEntity?.genres?.forEach {
-            val value = _binding?.tvGenereText?.text
-            _binding?.tvGenereText?.text = value.toString() + it + if (it != last) {" | "} else {""}
+        if (_selectedShowEntity?.genres?.isNotEmpty() == true) {
+            val last = _selectedShowEntity?.genres?.last()
+            _selectedShowEntity?.genres?.forEach {
+                val value = _binding?.tvGenereText?.text
+                _binding?.tvGenereText?.text = value.toString() + it + if (it != last) {
+                    " | "
+                } else {
+                    ""
+                }
+            }
+        } else {
+            _binding?.tvGenere?.isVisible = false
         }
         _binding?.tvSumary?.setText(Html.fromHtml(_selectedShowEntity?.summary))
     }

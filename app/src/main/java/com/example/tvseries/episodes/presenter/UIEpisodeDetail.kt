@@ -44,7 +44,11 @@ class UIEpisodeDetail: UIBase() {
         _binding?.tvName?.text = _episode?.name
         _binding?.tvNumber?.text = "Temporada "+" "+_episode?.season.toString()+
                 " - Episódio "+" "+_episode?.number.toString()
-        _binding?.tvResume?.setText(Html.fromHtml(_episode?.summary))
+        if (_episode?.summary?.isNotEmpty() == true) {
+            _binding?.tvResume?.setText(Html.fromHtml(_episode?.summary))
+        } else {
+            _binding?.tvResume?.text = "Sem resumo"
+        }
         _binding?.tvResume?.isEnabled = false
         _binding?.ivEpisodeBanner?.downloadImage(_episode?.image?.get("original"))
     }
