@@ -10,10 +10,12 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.TextView
 import androidx.core.content.res.ResourcesCompat
+import androidx.core.view.get
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.tvseries.MainActivity
 import com.example.tvseries.R
 import com.example.tvseries.episodes.presenter.EpisodeAdapter
 import com.example.tvseries.databinding.FragmentUishowDetailBinding
@@ -71,7 +73,6 @@ class UIShowDetail: UIBase() {
                 }
             }
         }
-
         viewModel.requestStatus.observe(viewLifecycleOwner) {
             when (it) {
                 VMShow.RequestStatus.Idle -> setViewLoading(false, false)
@@ -80,13 +81,11 @@ class UIShowDetail: UIBase() {
                 VMShow.RequestStatus.Done -> setViewLoading(false, false)
             }
         }
-
         viewModel.episodesBySeason.observe(viewLifecycleOwner) {
             it?.let {
                 _episodeAdapter?.submitList(it)
             }
         }
-
         _binding?.spSeason?.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(parent: AdapterView<*>?) {}
             override fun onItemSelected(
@@ -105,7 +104,6 @@ class UIShowDetail: UIBase() {
                 }
             }
         }
-
         _binding?.ivRefresh?.setOnClickListener {
             selectShow()
         }
@@ -121,7 +119,6 @@ class UIShowDetail: UIBase() {
 
     @SuppressLint("SetTextI18n")
     override fun bindView() {
-
         _episodeAdapter = EpisodeAdapter {
             findNavController().navigate (
                 UIShowDetailDirections.actionUIShowDetailToUIEpisodeDetail(it)
@@ -159,7 +156,6 @@ class UIShowDetail: UIBase() {
                 View.GONE
             }
         }
-
     }
 
     private fun createSpinnerAdapter(seasons: List<String>) : ArrayAdapter<String> {

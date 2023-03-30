@@ -45,8 +45,8 @@ class VMShow: ViewModel() {
         get() = _selectedPositionSeason
     val requestStatus: LiveData<RequestStatus>
         get() = _requestStatus
-    val filtering: LiveData<Boolean>
-        get() = _filtering
+    val filtering: Boolean
+        get() = (_filtering.value == true)
 
     fun fetchingApi(): Boolean {
         return  (_requestStatus.value == RequestStatus.Fetching)

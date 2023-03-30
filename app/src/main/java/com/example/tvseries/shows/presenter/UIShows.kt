@@ -9,7 +9,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.tvseries.MainActivity
 import com.example.tvseries.R
 import com.example.tvseries.databinding.FragmentUishowBinding
 import com.example.tvseries.app.base.UIBase
@@ -18,7 +17,6 @@ class UIShows: UIBase() {
 
     private var _binding: FragmentUishowBinding? = null
     private var _adapter: ShowAdapter? = null
-
     private val viewModel: VMShow by lazy {
         ViewModelProvider(this)[VMShow::class.java]
     }
@@ -43,15 +41,23 @@ class UIShows: UIBase() {
         super.onDestroyView()
     }
 
+    override fun setVisibleFilter(): Boolean {
+        return true
+    }
+
     override fun bindView() {
         super.bindView()
-
-        val main = MainActivity.getInstance()
-        main?.setFilterCallback {
+        mainActivity.setFilterCallback {
             _adapter?.clearList()
             viewModel.getShowByFilter(it)
         }
-
+        mainActivity.setClearFilterCallback {
+            if (viewModel.filtering) {
+                _adapter?.clearList()
+                viewModel.clear()
+                viewModel.getShows()
+            }
+        }
         _adapter = ShowAdapter() {
             findNavController().navigate(
                 UIShowsDirections.actionUIShowsToUIShowDetail(it)
@@ -67,19 +73,16 @@ class UIShows: UIBase() {
 
     override fun setListeners() {
         super.setListeners()
-
         viewModel.shows.observe(viewLifecycleOwner) {
             it?.let {
                 _adapter?.submitList(it)
             }
         }
-
         viewModel.filteredShows.observe(viewLifecycleOwner) {
             it?.let {
                 _adapter?.submitList(it)
             }
         }
-
         viewModel.requestStatus.observe(viewLifecycleOwner) {
             when (it) {
                 VMShow.RequestStatus.Idle -> setViewLoading(false, false)
@@ -88,7 +91,6 @@ class UIShows: UIBase() {
                 VMShow.RequestStatus.Done -> setViewLoading(false, false)
             }
         }
-
         _binding?.ivRefresh?.setOnClickListener {
             viewModel.clear()
             viewModel.getShows()
@@ -114,7 +116,6 @@ class UIShows: UIBase() {
                 View.GONE
             }
         }
-
     }
 
     private val recyclerViewScrollListener = object : RecyclerView.OnScrollListener() {
@@ -125,7 +126,7 @@ class UIShows: UIBase() {
                     val visibleItemCount = gridLayout.childCount
                     val firstVisibleItem = gridLayout.findFirstCompletelyVisibleItemPosition()
                     val totalItemCount = _adapter?.itemCount ?: 0
-                    if (((visibleItemCount + firstVisibleItem) >= totalItemCount) && (viewModel.filtering.value == false)){
+                    if (((visibleItemCount + firstVisibleItem) >= totalItemCount) && (!viewModel.filtering)){
                         viewModel.getShows()
                     }
                 }
