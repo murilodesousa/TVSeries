@@ -46,6 +46,9 @@ class MainActivity : AppCompatActivity() {
 
     private fun setupToolbar() {
        setSupportActionBar(binding?.mainToolbar)
+       setVisibleFilter {
+           setVisibleFilter()
+       }
        supportActionBar?.apply { setupActionBarWithNavController(navController) }
        binding?.mainToolbar?.setNavigationOnClickListener {
            navController.navigateUp()
@@ -89,6 +92,10 @@ class MainActivity : AppCompatActivity() {
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
         controller.handleDeepLink(intent)
+    }
+
+    private fun setVisibleFilter(): Boolean {
+        return true
     }
 
 }
