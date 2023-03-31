@@ -55,61 +55,18 @@ class VMShow: ViewModel() {
     fun getShows() {
         clearFilter()
         _lastPageIndex++
-        _requestStatus.value = RequestStatus.Fetching
-        val retrofitClient = RetrofitUtils.getRetrofitInstance()
-        val endpoint = retrofitClient.create(Api::class.java)
+        setStatus(RequestStatus.Fetching)
         job = CoroutineScope(Dispatchers.IO).launch {
-            val showList = endpoint.getShowsByPage(_lastPageIndex)
+            val showList = endpoint().getShowsByPage(_lastPageIndex)
             showList.enqueue(object : retrofit2.Callback<List<ShowEntity>> {
                 override fun onResponse(call: Call<List<ShowEntity>>, response: Response<List<ShowEntity>>) {
                     response.body()?.let {
                         _shows.value = it
-                        _requestStatus.value = RequestStatus.Done
+                        setStatus(RequestStatus.Done)
                     }
                 }
                 override fun onFailure(call: Call<List<ShowEntity>>, t: Throwable) {
-                    _requestStatus.value = RequestStatus.Error
-                }
-            })
-        }
-    }
-
-    private fun getEpisodesByShow(show: Int) {
-        _requestStatus.value = RequestStatus.Fetching
-        val retrofitClient = RetrofitUtils.getRetrofitInstance()
-        val endpoint = retrofitClient.create(Api::class.java)
-        job = CoroutineScope(Dispatchers.IO).launch {
-            val episodeList = endpoint.getEpisodesByShow(show)
-            episodeList.enqueue(object : retrofit2.Callback<List<EpisodeEntity>> {
-                override fun onResponse(call: Call<List<EpisodeEntity>>, response: Response<List<EpisodeEntity>>) {
-                    response.body()?.let {
-                        _episodes.value = it
-                        _requestStatus.value = RequestStatus.Done
-                    }
-                }
-                override fun onFailure(call: Call<List<EpisodeEntity>>, t: Throwable) {
-                    _requestStatus.value = RequestStatus.Error
-                }
-            })
-        }
-
-    }
-
-    private fun getSeasonsByShow(show: Int) {
-        _requestStatus.value = RequestStatus.Fetching
-        val retrofitClient = RetrofitUtils.getRetrofitInstance()
-        val endpoint = retrofitClient.create(Api::class.java)
-        job = CoroutineScope(Dispatchers.IO).launch {
-            val episodeList = endpoint.getSeasonsByShow(show)
-            episodeList.enqueue(object : retrofit2.Callback<List<SeasonEntity>> {
-                override fun onResponse(call: Call<List<SeasonEntity>>, response: Response<List<SeasonEntity>>) {
-                    response.body()?.let {
-                        _seasons.postValue(it)
-                        _requestStatus.value = RequestStatus.Done
-                    }
-                }
-                override fun onFailure(call: Call<List<SeasonEntity>>, t: Throwable) {
-                    _requestStatus.value = RequestStatus.Error
+                    setStatus(RequestStatus.Error)
                 }
             })
         }
@@ -117,11 +74,9 @@ class VMShow: ViewModel() {
 
     fun getShowByFilter(filter: String) {
         setFiltering()
-        _requestStatus.value = RequestStatus.Fetching
-        val retrofitClient = RetrofitUtils.getRetrofitInstance()
-        val endpoint = retrofitClient.create(Api::class.java)
+        setStatus(RequestStatus.Fetching)
         job = CoroutineScope(Dispatchers.IO).launch {
-            val filteredShowList = endpoint.getShowsByFilter(filter)
+            val filteredShowList = endpoint().getShowsByFilter(filter)
             filteredShowList.enqueue(object : retrofit2.Callback<List<ShowFilterEntity>> {
                 override fun onResponse(call: Call<List<ShowFilterEntity>>, response: Response<List<ShowFilterEntity>>) {
                     response.body()?.let {
@@ -131,11 +86,11 @@ class VMShow: ViewModel() {
                         }
                         _lastPageIndex = -1
                         _filteredShows.postValue(showEntities)
-                        _requestStatus.postValue(RequestStatus.Done)
+                        setStatus(RequestStatus.Done)
                     }
                 }
                 override fun onFailure(call: Call<List<ShowFilterEntity>>, t: Throwable) {
-                    _requestStatus.value = RequestStatus.Error
+                    setStatus(RequestStatus.Error)
                 }
             })
         }
@@ -147,7 +102,7 @@ class VMShow: ViewModel() {
 
     fun clear() {
         _lastPageIndex = -1
-        _requestStatus.value = RequestStatus.Idle
+        setStatus(RequestStatus.Idle)
         _selectedShowEntity = null
         _shows.value = mutableListOf()
         _episodes.value = mutableListOf()
@@ -186,9 +141,55 @@ class VMShow: ViewModel() {
         _filtering.value = true
     }
 
+    private fun getEpisodesByShow(show: Int) {
+        setStatus(RequestStatus.Fetching)
+        job = CoroutineScope(Dispatchers.IO).launch {
+            val episodeList = endpoint().getEpisodesByShow(show)
+            episodeList.enqueue(object : retrofit2.Callback<List<EpisodeEntity>> {
+                override fun onResponse(call: Call<List<EpisodeEntity>>, response: Response<List<EpisodeEntity>>) {
+                    response.body()?.let {
+                        _episodes.value = it
+                        setStatus(RequestStatus.Done)
+                    }
+                }
+                override fun onFailure(call: Call<List<EpisodeEntity>>, t: Throwable) {
+                    setStatus(RequestStatus.Error)
+                }
+            })
+        }
+
+    }
+
+    private fun getSeasonsByShow(show: Int) {
+        setStatus(RequestStatus.Fetching)
+        job = CoroutineScope(Dispatchers.IO).launch {
+            val episodeList = endpoint().getSeasonsByShow(show)
+            episodeList.enqueue(object : retrofit2.Callback<List<SeasonEntity>> {
+                override fun onResponse(call: Call<List<SeasonEntity>>, response: Response<List<SeasonEntity>>) {
+                    response.body()?.let {
+                        _seasons.postValue(it)
+                        setStatus(RequestStatus.Done)
+                    }
+                }
+                override fun onFailure(call: Call<List<SeasonEntity>>, t: Throwable) {
+                    setStatus(RequestStatus.Error)
+                }
+            })
+        }
+    }
+
     private fun clearFilter() {
         _filtering.value = false
         _filteredShows.value = mutableListOf()
+    }
+
+    private fun endpoint(): Api {
+        val retrofitClient = RetrofitUtils.getRetrofitInstance()
+        return retrofitClient.create(Api::class.java)
+    }
+
+    private fun setStatus(status: RequestStatus) {
+        _requestStatus.value = status
     }
 
 }
