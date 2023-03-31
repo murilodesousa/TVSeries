@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/UIShows"
         android:name="com.example.tvseries.shows.presenter.UIShows"
-        android:label="TV Series"
+        android:label="@string/app_name"
         tools:layout="@layout/fragment_uishow">
         <action
             android:id="@+id/action_UIShows_to_UIShowDetail"
@@ -21,7 +21,7 @@
     <fragment
         android:id="@+id/UIShowDetail"
         android:name="com.example.tvseries.shows.presenter.UIShowDetail"
-        android:label="TV Series" >
+        android:label="@string/app_name">
         <argument
             android:name="show"
             app:argType="com.example.tvseries.shows.data.ShowEntity"
@@ -36,7 +36,7 @@
     <fragment
         android:id="@+id/UIEpisodeDetail"
         android:name="com.example.tvseries.episodes.presenter.UIEpisodeDetail"
-        android:label="TV Series" >
+        android:label="@string/app_name">
         <action
             android:id="@+id/action_UIEpisodeDetail_to_UIShowDetail"
             app:destination="@id/UIShowDetail" />

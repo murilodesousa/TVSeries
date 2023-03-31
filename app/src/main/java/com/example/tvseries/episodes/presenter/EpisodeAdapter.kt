@@ -5,8 +5,6 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LifecycleOwner
-import androidx.paging.PagingDataAdapter
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tvseries.R
 import com.example.tvseries.databinding.EpisodeItemBinding
@@ -16,32 +14,27 @@ import java.text.SimpleDateFormat
 import com.example.tvseries.utils.toDate
 
 class EpisodeAdapter(private val onItemSelected: (episode: EpisodeEntity) -> Unit
-): PagingDataAdapter<EpisodeEntity, EpisodeAdapter.ViewHolder>(object : DiffUtil.ItemCallback<EpisodeEntity>() {
-
-    override fun areItemsTheSame(oldItem: EpisodeEntity, newItem: EpisodeEntity): Boolean {
-        return oldItem.id == newItem.id
-    }
-
-    override fun areContentsTheSame(oldItem: EpisodeEntity, newItem: EpisodeEntity): Boolean {
-        return oldItem == newItem
-    }
-
-}) {
+): RecyclerView.Adapter<EpisodeAdapter.ViewHolder>()  {
 
     private val _episodes = mutableListOf<EpisodeEntity>()
     private lateinit var _lifecycleOwner: LifecycleOwner
 
     inner class ViewHolder(val binding: EpisodeItemBinding) : RecyclerView.ViewHolder(binding.root) {
 
-        @SuppressLint("SetTextI18n", "SimpleDateFormat")
+        @SuppressLint("SimpleDateFormat")
         fun bind(episode: EpisodeEntity, position: Int) {
             binding.lifecycleOwner = _lifecycleOwner
             binding.tvName.text = episode.name
             val formatter = SimpleDateFormat("dd/MM/yyyy")
             val date = episode.airdate?.toDate()?.let { formatter.format(it) }
-            binding.tvDate.text = "Lançamento: "+date+" "+episode.airtime
+            binding.tvDate.text = String.format(
+                binding.root.resources.getString(R.string.episode_release_date),
+                date,
+                episode.airtime
+            )
             binding.ivEpisodeBanner.downloadImage(episode.image?.get("medium"))
-            binding.tvRuntime.text = "Duração: "+episode.runtime+" minutos"
+            binding.tvRuntime.text = binding.root.resources.getString(R.string.episode_duration,
+                episode.runtime.toString())
             binding.clItem.setOnClickListener {
                 onItemSelected(episode)
             }

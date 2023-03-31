@@ -42,12 +42,15 @@ class UIEpisodeDetail: UIBase() {
     @SuppressLint("SetTextI18n")
     override fun bindView() {
         _binding?.tvName?.text = _episode?.name
-        _binding?.tvNumber?.text = "Temporada "+" "+_episode?.season.toString()+
-                " - Episódio "+" "+_episode?.number.toString()
+        _binding?.tvNumber?.text = _binding?.root?.resources?.getString(
+            R.string.episode_season_and_number,
+            _episode?.season.toString(),
+            _episode?.number.toString()
+        )
         if (_episode?.summary?.isNotEmpty() == true) {
             _binding?.tvResume?.setText(Html.fromHtml(_episode?.summary))
         } else {
-            _binding?.tvResume?.text = "Sem resumo"
+            _binding?.tvResume?.text = _binding?.root?.resources?.getString(R.string.episode_empty_summary)
         }
         _binding?.tvResume?.isEnabled = false
         _binding?.ivEpisodeBanner?.downloadImage(_episode?.image?.get("original"))

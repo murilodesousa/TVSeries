@@ -60,10 +60,13 @@ class UIShowDetail: UIBase() {
         viewModel.seasons.observe(viewLifecycleOwner) {
             if (it.isNotEmpty()) {
                 it.let {
-                    val hintText = "Temporada...  "
+                    val hintText = _binding?.root?.resources?.getString(R.string.show_season)
                     val seasonsName = mutableListOf(hintText)
                     it.forEach {
-                        seasonsName.add("Temporada " + it.number.toString())
+                        seasonsName.add(_binding?.root?.resources?.getString(
+                            R.string.show_season_number,
+                            it.number.toString()) ?: ""
+                        )
                     }
                     val spinnerAdapter = createSpinnerAdapter(seasonsName)
                     spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
@@ -167,7 +170,7 @@ class UIShowDetail: UIBase() {
         }
     }
 
-    private fun createSpinnerAdapter(seasons: List<String>) : ArrayAdapter<String> {
+    private fun createSpinnerAdapter(seasons: MutableList<String?>) : ArrayAdapter<String> {
         return object : ArrayAdapter<String>(
             requireContext(),
             android.R.layout.simple_spinner_item,

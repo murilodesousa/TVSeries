@@ -4,8 +4,6 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LifecycleOwner
-import androidx.paging.PagingDataAdapter
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tvseries.R
 import com.example.tvseries.databinding.ShowItemBinding
@@ -13,17 +11,7 @@ import com.example.tvseries.shows.data.ShowEntity
 import com.example.tvseries.utils.downloadImage
 
 class ShowAdapter(private val onItemSelected: (showEntity: ShowEntity) -> Unit
-): PagingDataAdapter<ShowEntity, ShowAdapter.ViewHolder>(object : DiffUtil.ItemCallback<ShowEntity>() {
-
-    override fun areItemsTheSame(oldItem: ShowEntity, newItem: ShowEntity): Boolean {
-        return oldItem.id == newItem.id
-    }
-
-    override fun areContentsTheSame(oldItem: ShowEntity, newItem: ShowEntity): Boolean {
-        return oldItem == newItem
-    }
-
-}) {
+): RecyclerView.Adapter<ShowAdapter.ViewHolder>() {
 
     private val _showEntities = mutableListOf<ShowEntity?>()
     private lateinit var _lifecycleOwner: LifecycleOwner

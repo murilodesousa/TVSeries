@@ -50,7 +50,7 @@
                     app:layout_constraintTop_toBottomOf="@id/ivRefresh"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    android:text="Houve uma falha ao carregar os dados. Tente novamente"
+                    android:text="@string/fail_connect"
                     />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -106,7 +106,6 @@
 
                     <TextView
                         android:id="@+id/tvShowTitle"
-                        android:text="Dexter"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="@color/black"
@@ -116,11 +115,13 @@
                         android:paddingEnd="4dp"
                         android:layout_margin="10dp"
                         app:layout_constraintStart_toEndOf="@id/clShowBanner"
-                        app:layout_constraintTop_toTopOf="@id/clShowBanner"/>
+                        app:layout_constraintTop_toTopOf="@id/clShowBanner"
+                        tools:text="Dexter"
+                        />
 
                     <TextView
                         android:id="@+id/tvGenere"
-                        android:text="Gênero: "
+                        android:text="@string/genre"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="@color/black"
@@ -161,7 +162,7 @@
                             android:layout_marginLeft="10dp"
                             android:layout_marginRight="10dp"
                             android:textColor="#666666"
-                                android:textSize="16sp" />
+                            android:textSize="16sp" />
 
                         <ImageButton
                             android:id="@id/expand_collapse"

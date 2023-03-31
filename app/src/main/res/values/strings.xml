@@ -1,3 +1,19 @@
 <resources>
-    <string name="app_name">TVSeries</string>
+    <string name="app_name">TV Series</string>
+
+    <!--  General  -->
+    <string name="fail_connect">Houve uma falha ao carregar os dados. Tente novamente</string>
+    <string name="genre">Gênero: </string>
+    <string name="find">Pesquisar</string>
+
+    <!--  Episode  -->
+    <string name="episode_release_date">Lançamento: %s %s</string>
+    <string name="episode_duration">Duração: %s minutos</string>
+    <string name="episode_season_and_number">Temporada %s - Episódio %s</string>
+    <string name="episode_empty_summary">Sem resumo</string>
+
+    <!--  Show  -->
+    <string name="show_season">Temporada…</string>
+    <string name="show_season_number">Temporada %s</string>
+
 </resources>

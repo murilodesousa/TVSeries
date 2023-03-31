@@ -45,7 +45,7 @@
                 app:layout_constraintTop_toBottomOf="@id/ivRefresh"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                android:text="Houve uma falha ao carregar os dados. Tente novamente"
+                android:text="@string/fail_connect"
                 />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
